@@ -20,11 +20,11 @@ export interface ResolveLinkTargetInput {
 }
 
 export function resolveLinkTarget(input: ResolveLinkTargetInput): BrowserLinkTarget {
-  if (input.event.metaKey || input.event.ctrlKey || input.event.button === 1) return "system";
-  if (input.preference !== "app") return "system";
+  if (input.event.button === 1) return "system";
   if (!input.canOpenInApp) return "system";
   if (!isWebUrl(input.url)) return "system";
-  return "app";
+  const flipped = input.event.metaKey || input.event.ctrlKey;
+  return (input.preference === "app") !== flipped ? "app" : "system";
 }
 
 export function isWebUrl(url: string): boolean {
