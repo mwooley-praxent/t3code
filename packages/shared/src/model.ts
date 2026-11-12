@@ -552,3 +552,15 @@ export function applyClaudePromptEffortPrefix(
   }
   return `Ultrathink:\n${trimmed}`;
 }
+
+const VALET_CLAUDE_MODEL = "claude-sonnet-5-5";
+const VALET_CLAUDE_EFFORT = "high";
+
+/** Valet mode: the selection a Claude turn runs as, whatever the thread has saved. */
+export function valetClaudeModelSelection(selection: ModelSelection): ModelSelection {
+  return {
+    instanceId: selection.instanceId,
+    model: VALET_CLAUDE_MODEL,
+    options: [{ id: "effort", value: VALET_CLAUDE_EFFORT }],
+  };
+}

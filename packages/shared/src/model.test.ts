@@ -11,6 +11,7 @@ import {
   getProviderOptionDescriptors,
   readCustomModelEntries,
   modelSelectionsEqual,
+  valetClaudeModelSelection,
 } from "./model.ts";
 
 const codexCaps: ModelCapabilities = createModelCapabilities({
@@ -225,5 +226,19 @@ describe("provider-reported option display", () => {
     { ...selection, options: [{ id: "variant", value: "none" }] },
   ])("ignores reports after changing the model, instance, or option: %j", (selected) => {
     expect(getProviderOptionCurrentLabel(descriptor, selected, reported)).toBe("Unknown");
+  });
+});
+
+describe("valetClaudeModelSelection", () => {
+  it("replaces any Claude selection with Sonnet 5.5 at high effort on the same instance", () => {
+    const opus = createModelSelection(ProviderInstanceId.make("claudeAgent"), "claude-opus-5-5", [
+      { id: "effort", value: "max" },
+      { id: "fastMode", value: true },
+    ]);
+    expect(valetClaudeModelSelection(opus)).toEqual({
+      instanceId: "claudeAgent",
+      model: "claude-sonnet-5-5",
+      options: [{ id: "effort", value: "high" }],
+    });
   });
 });
