@@ -251,6 +251,11 @@ export const ChatHeader = memo(function ChatHeader({
         "flex min-w-0 flex-1 items-center gap-2 sm:gap-3",
         rightPanelOpen ? "pr-10" : "pr-24",
       )}
+      style={
+        rightPanelOpen
+          ? undefined
+          : { paddingRight: "calc(6rem + var(--titlebar-usage-inset, 0px))" }
+      }
       onContextMenu={handleHeaderContextMenu}
     >
       <WorkspaceBreadcrumb

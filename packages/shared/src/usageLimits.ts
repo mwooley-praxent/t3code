@@ -734,6 +734,17 @@ export function formatResetsIn(window: ServerProviderUsageWindow, now: number): 
   return `resets in ${formatDuration(resetsAt - now)}`;
 }
 
+/** Whole hours, switching to days past 48h: "now", "<1h", "3h", "4d". */
+export function formatResetsInRough(window: ServerProviderUsageWindow, now: number): string | null {
+  const resetsAt = resetMillis(window);
+  if (resetsAt === null) return null;
+  const left = resetsAt - now;
+  if (left <= 0) return "now";
+  if (left < HOUR) return "<1h";
+  const hours = Math.round(left / HOUR);
+  return hours < 48 ? `${hours}h` : `${Math.round(left / DAY)}d`;
+}
+
 export const USAGE_LIMITS_COMMAND = {
   name: "usage-limits",
   description: "Show this provider's usage limits",

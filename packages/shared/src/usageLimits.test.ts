@@ -20,6 +20,7 @@ import {
   elapsedShare,
   exhaustedUsageWindow,
   paceOf,
+  formatResetsInRough,
   paceRemainingPercent,
   usesChatGptSharing,
   resolveNewThreadModelSelection,
@@ -160,6 +161,10 @@ describe("pace", () => {
     expect(paceOf(window, now)).toBe("under");
     expect(paceOf({ ...window, usedPercent: 62 }, now)).toBe("on");
     expect(paceOf({ ...window, usedPercent: 80 }, now)).toBe("ahead");
+    expect(formatResetsInRough(window, now)).toBe("2h");
+    expect(formatResetsInRough(window, Date.parse(window.resetsAt) - 20 * 60_000)).toBe("<1h");
+    expect(formatResetsInRough(window, Date.parse(window.resetsAt) - 100 * 3_600_000)).toBe("4d");
+    expect(formatResetsInRough(window, Date.parse(window.resetsAt) + 1)).toBe("now");
   });
 });
 
